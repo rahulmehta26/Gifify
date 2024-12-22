@@ -29,7 +29,7 @@ const Header = () => {
     <nav>
       <div className=" relative flex gap-4 justify-between items-center mb-2 ">
         <Link to="/" className=" flex gap-x-3 ">
-          <img src="/logo.svg" className="w-10 invert " alt="Gifify logo" />
+          <img src="/gifify.webp" className="size-12 rounded-full object-cover " alt="Gifify logo" />
 
           <h1 className="text-5xl font-bold tracking-tight cursor-pointer ">
             GIFIFY

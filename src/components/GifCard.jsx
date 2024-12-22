@@ -4,8 +4,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const GifCard = ({ hover = true, gif }) => {
+
   return (
-    <Link to={`/${gif.type}s/${gif.slug}`}>
+    <Link to={ gif.type === 'text' ? `/${gif.type}/${gif.slug}` : `/${gif.type}s/${gif.slug}` }>
       <div className=" w-full mb-2 relative cursor-pointer group">
         <img
           src={gif?.images?.fixed_width.webp}

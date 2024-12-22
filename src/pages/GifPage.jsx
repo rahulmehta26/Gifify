@@ -14,6 +14,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
 import SocialFollowOn from "../components/SocialFollowOn";
+import { Gifs } from "../components/Skeleton";
 
 const gifType = ["gifs", "stickers", "text"];
 
@@ -25,15 +26,23 @@ const GifPage = () => {
   const [gifData, setGifData] = useState({});
   const [relatedGifs, setRelatedGifs] = useState([]);
   const [readMore, setReadMore] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const fetchGif = async () => {
+    setLoading(true); 
     const gifId = slug.split("-");
 
-    const { data } = await gif.gif(gifId[gifId.length - 1]);
-    const related = await gif.related(gifId[gifId.length - 1]);
+    try {
+      const { data } = await gif.gif(gifId[gifId.length - 1]);
+      const related = await gif.related(gifId[gifId.length - 1]);
 
-    setGifData(data);
-    setRelatedGifs(related.data);
+      setGifData(data);
+      setRelatedGifs(related.data);
+    } catch (error) {
+      console.error("Error fetching GIF data:", error);
+    } finally {
+      setLoading(false); 
+    }
   };
 
   useEffect(() => {
@@ -42,7 +51,7 @@ const GifPage = () => {
     }
 
     fetchGif();
-  }, []);
+  }, [slug, type]);
 
   const shareGif = () => {};
 
@@ -114,7 +123,15 @@ const GifPage = () => {
           <div className=" w-full sm:w-3/4 ">
             <div className=" faded-text truncate mb-2 ">{gifData?.title}</div>
 
-            <GifCard gif={gifData} hover={false} />
+            {
+              loading ? (
+                <Gifs />
+              ) : (
+                
+                <GifCard gif={gifData} hover={false} />
+              )
+            }
+
 
             <div className=" flex sm:hidden ">
               <img
@@ -170,10 +187,12 @@ const GifPage = () => {
           </div>
         </div>
 
-        <div>
-          <span className=" font-extrabold ">Related GIFs</span>
+        <div
+        className=" mt-4 "
+        >
+          <span className=" text-[1.5rem] font-extrabold ">Related GIFs</span>
 
-          <div className="columns-2 md:col-span-3 lg:columns-4 xl:columns-5 gap-4 ">
+          <div className="columns-2 mt-4 md:col-span-3 lg:columns-4 xl:columns-5 gap-4 ">
             {relatedGifs?.slice(1).map((gif) => <GifCard key={gif.id} gif={gif} />
             )}
           </div>

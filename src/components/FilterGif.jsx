@@ -6,6 +6,7 @@ import { ArrowTrendingUpIcon } from "@heroicons/react/24/outline";
 import filterItems from "../constant/filterData";
 
 const FilterGif = ({ alignLeft = false, showTrending = false }) => {
+  
   const { filter, setFilter } = GifState();
 
   return (

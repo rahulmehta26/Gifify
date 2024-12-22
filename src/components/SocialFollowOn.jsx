@@ -17,7 +17,7 @@ const SocialFollowOn = () => {
             className={customIcon}
           />
         </a>
-        <a href="www.linkedin.com/in/rahulmehta26">
+        <a href="https://linkedin.com/in/rahulmehta26">
           <img
             src="/linkedIn.png"
             alt="LinkedIn"
