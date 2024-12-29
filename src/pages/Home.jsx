@@ -48,7 +48,7 @@ const Home = () => {
 
           <div className="columns-2 md:columns-3 lg:columns-4 xl:columns-5 gap-4 mt-4">
             {gifs?.map((gif) => (
-              <GifCard key={gif?.title} gif={gif} />
+              <GifCard key={gif?.title} hover = {true} gif={gif} />
             ))}
           </div>
         </>

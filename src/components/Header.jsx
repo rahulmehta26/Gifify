@@ -58,12 +58,14 @@ const Header = () => {
           </button>
 
           {favourites.length > 0 && (
-            <div className=" h-10 bg-gray-700 pt-1.5 px-6 cursor-pointer rounded ">
+            <div className=" h-10 bg-gray-700 pt-1.5 hidden md:block px-6 cursor-pointer rounded ">
               <Link to="/favourites">Favourite GIFs</Link>
             </div>
           )}
 
-          <button className=" block lg:hidden ">
+          <button 
+          onClick={() => setShowCategory(!showCategory)}
+          className=" block lg:hidden ">
             <Bars3Icon className="size-8" />
           </button>
         </div>

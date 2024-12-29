@@ -27,9 +27,11 @@ const GifPage = () => {
   const [relatedGifs, setRelatedGifs] = useState([]);
   const [readMore, setReadMore] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isShare, setIsShare] = useState(false);
+  const [isEmbed, setIsEmbed] = useState(false);
 
   const fetchGif = async () => {
-    setLoading(true); 
+    setLoading(true);
     const gifId = slug.split("-");
 
     try {
@@ -41,7 +43,7 @@ const GifPage = () => {
     } catch (error) {
       console.error("Error fetching GIF data:", error);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
@@ -53,12 +55,8 @@ const GifPage = () => {
     fetchGif();
   }, [slug, type]);
 
-  const shareGif = () => {};
-
-  const embedGif = () => {};
-
   return (
-    <div className=" grid grid-cols-4 my-10 gap-4">
+    <div className=" grid overflow-x-hidden grid-cols-4 my-10 gap-4">
       <div className=" hidden sm:block ">
         {gifData?.user && (
           <>
@@ -123,15 +121,17 @@ const GifPage = () => {
           <div className=" w-full sm:w-3/4 ">
             <div className=" faded-text truncate mb-2 ">{gifData?.title}</div>
 
-            {
-              loading ? (
-                <Gifs />
-              ) : (
-                
-                <GifCard gif={gifData} hover={false} />
-              )
-            }
-
+            {loading ? (
+              <Gifs />
+            ) : (
+              <GifCard
+                gif={gifData}
+                isEmbed={isEmbed}
+                isShare={isShare}
+                setIsEmbed={setIsEmbed}
+                setIsShare={setIsShare}
+              />
+            )}
 
             <div className=" flex sm:hidden ">
               <img
@@ -163,14 +163,18 @@ const GifPage = () => {
             >
               <HeartIcon
                 className={`size-6 ${
-                  favourites.includes(gifData.id) ? "text-red-500 fill-red-500 " : ""
+                  favourites.includes(gifData.id)
+                    ? "text-red-500 fill-red-500 "
+                    : "text-[#fff] fill-[#fff]"
                 } `}
               />
               Favourites
             </button>
 
             <button
-              // onClick={shareGif}
+              onClick={() => {
+                setIsShare((prev) => !prev), setIsEmbed(false);
+              }}
               className=" flex gap-5 items-center font-bold text-lg "
             >
               <PaperAirplaneIcon className="size-6 -rotate-[35deg] " />
@@ -178,7 +182,9 @@ const GifPage = () => {
             </button>
 
             <button
-              // onClick={shareGif}
+              onClick={() => {
+                setIsEmbed((prev) => !prev), setIsShare(false);
+              }}
               className=" flex gap-5 items-center font-bold text-lg "
             >
               <CodeBracketIcon className="size-6" />
@@ -187,14 +193,13 @@ const GifPage = () => {
           </div>
         </div>
 
-        <div
-        className=" mt-4 "
-        >
+        <div className=" mt-4 ">
           <span className=" text-[1.5rem] font-extrabold ">Related GIFs</span>
 
           <div className="columns-2 mt-4 md:col-span-3 lg:columns-4 xl:columns-5 gap-4 ">
-            {relatedGifs?.slice(1).map((gif) => <GifCard key={gif.id} gif={gif} />
-            )}
+            {relatedGifs?.slice(1).map((gif) => (
+              <GifCard key={gif.id} gif={gif} hover={true} />
+            ))}
           </div>
         </div>
       </div>

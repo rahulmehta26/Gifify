@@ -14,12 +14,15 @@ const Category = () => {
   const { gif } = GifState();
 
   const fetchCategoryData = async () => {
-
-    const { data } = await gif.gifs(category);
-
-    setCategoryData(data);
+    try {
+      const { data } = await gif.gifs(category);
+  
+      setCategoryData(data);
+    } catch (error) {
+      return error;
+    }
   };
-
+  
   useEffect(() => {
     fetchCategoryData();
   }, [category]);
@@ -37,38 +40,24 @@ const Category = () => {
 
         <SocialFollowOn />
 
-        <div
-        className="divider"
-        ></div>
+        <div className="divider"></div>
       </div>
 
       <div>
-        <h2
-        className=" text-4xl pb-1 font-extrabold capitalize "
-        >
-          {
-            category.split("-").join(" & ") 
-          } GIFs
+        <h2 className=" text-4xl pb-1 font-extrabold capitalize ">
+          {category.split("-").join(" & ")} GIFs
         </h2>
-        <h2
-        className=" text-lg text-gray-400 pb-3 font-bold hover:text-gray-50 cursor-pointer "
-        >
+        <h2 className=" text-lg text-gray-400 pb-3 font-bold hover:text-gray-50 cursor-pointer ">
           @{category}
         </h2>
 
-        {
-          categoryData.length > 0 && (
-
-            <div
-            className="columns-2 md:col-span-3 lg:columns-4 xl:columns-5 gap-4 "
-            >
-              {
-                categoryData.slice(1).map((gif) => <GifCard key={gif.id} gif={gif} /> )
-              }
-
-            </div>
-          )
-        }
+        {categoryData.length > 0 && (
+          <div className="columns-2 md:col-span-3 lg:columns-4 xl:columns-5 gap-4 ">
+            {categoryData.slice(1).map((gif) => (
+              <GifCard key={gif.id} gif={gif} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
